@@ -55,7 +55,7 @@ resource "aws_security_group" "k8s-sec-gr" {
 
 
 resource "aws_iam_role" "petclinic-master-server-s3-role" {
-  name               = "petclinic-master-server-role"
+  name               = "petclinic-master-server-role-1"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -79,15 +79,15 @@ resource "aws_iam_role_policy_attachment" "petclinic_s3_policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
 }
 
-resource "aws_iam_instance_profile" "petclinic-master-server-profile" {
-  name = "petclinic-master-server-profile"
+resource "aws_iam_instance_profile" "petclinic-master-server-profile-1" {
+  name = "petclinic-master-server-profile-1"
   role = aws_iam_role.petclinic-master-server-s3-role.name
 }
 
 resource "aws_instance" "kube-master" {
   ami = "ami-005fc0f236362e99f"
   instance_type = "t3a.medium"
-  iam_instance_profile = aws_iam_instance_profile.petclinic-master-server-profile.name
+  iam_instance_profile = aws_iam_instance_profile.petclinic-master-server-profile-1.name
   vpc_security_group_ids = [aws_security_group.k8s-sec-gr.id]
   key_name = "clarus"
   subnet_id = "subnet-02eb1d652f5d879d5"  # select own subnet_id of us-east-1a
